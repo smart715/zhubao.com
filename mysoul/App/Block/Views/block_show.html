@@ -1,0 +1,59 @@
+{template "header.html"}
+
+<form class="form-horizontal" method="post" role="form" id="myform">
+
+    <div class="form-body">
+
+
+        <link href="{THEME_PATH}assets/global/plugins/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_PATH}assets/global/plugins/codemirror/theme/neat.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_PATH}assets/global/plugins/codemirror/theme/ambiance.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_PATH}assets/global/plugins/codemirror/theme/material.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_PATH}assets/global/plugins/codemirror/theme/neo.css" rel="stylesheet" type="text/css" />
+
+        <script src="{THEME_PATH}assets/global/plugins/codemirror/lib/codemirror.js" type="text/javascript"></script>
+        <script src="{THEME_PATH}assets/global/plugins/codemirror/mode/javascript/javascript.js" type="text/javascript"></script>
+        <script src="{THEME_PATH}assets/global/plugins/codemirror/mode/htmlmixed/htmlmixed.js" type="text/javascript"></script>
+        <script src="{THEME_PATH}assets/global/plugins/codemirror/mode/css/css.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var ComponentsCodeEditors = function () {
+
+                var handleDemo1 = function () {
+                    var myTextArea = document.getElementById('code_editor_demo_1');
+                    var myCodeMirror = CodeMirror.fromTextArea(myTextArea, {
+                        lineNumbers: false,
+                        matchBrackets: true,
+                        styleActiveLine: true,
+                        theme:"neo",
+                        mode: 'css',
+                        readOnly: true
+                    });
+                }
+
+                return {
+                    //main function to initiate the module
+                    init: function () {
+                        handleDemo1();
+                    }
+                };
+
+            }();
+
+            jQuery(document).ready(function() {
+                ComponentsCodeEditors.init();
+            });
+        </script>
+        <div class="form-group ">
+            <div class="col-xs-12">
+                <textarea id="code_editor_demo_1">{$code}</textarea>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    .CodeMirror {
+        height:180px;
+    }
+</style>
+{template "footer.html"}

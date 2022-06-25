@@ -1,0 +1,65 @@
+﻿<header class="row" id="header">
+    <div class="row m0 logo_line">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 logo">
+                    <a href="/" class="logo_a"><img src="{SITE_LOGO}" alt="D-shine" style="width: 108%;height: 164px;margin-top: -49px;margin-bottom: -37px;">
+                    </a>
+                </div>
+                <div class="col-sm-7 searchSec">
+                    <div class="col-sm-12">
+                        <div class="fright searchForm">
+                            <form action="/index.php">
+                                <div class="input-group">
+                                    <input type="hidden" name="c" value="search">
+                                    <input type="hidden" name="s" value="chanpin">
+
+                                    <!-- <input type="hidden" name="search_param" value="all" id="search_param"> -->
+                                    <input type="text" class="form-control" name="keyword" placeholder="Search Products" onfocus="if(this.value==defaultValue)this.value=''" onblur="if(this.value=='')this.value=defaultValue">
+                                    <span class="input-group-btn searchIco">
+                                        <button class="btn btn-default" type="submit"><i class="fas fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default m0 navbar-static-top">
+        <div class="container-fluid container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNav">
+                    <i class="fas fa-bars"></i> MENU
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="nav navbar-nav" style="    display: flex;justify-content: space-around;">
+                    {category module=share pid=0 return=c1}
+                    {if $c1.child}
+
+                    <li class=" dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{$c1.name}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            {category module=share pid=$c1.id return=c2}
+                            <li><a href="{$c2.url}">{$c2.name}</a></li>
+                            {/category}
+                        </ul>
+                    </li>
+                    {else}
+                    <li class=""><a href="{$c1.url}">{$c1.name}</a></li>
+                    {/if}
+                    {/category}
+                    <!-- <li class="offers_navbtn"><a href="#"><i class="fas fa-gift"></i>Offers</a></li> -->
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>

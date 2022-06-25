@@ -1,0 +1,49 @@
+{template "header.html"}
+<div class="note note-danger">
+    <p>{mys_lang('金额为正数表示增加; 负数表示减少')}</p>
+</div>
+<form action="" class="form-horizontal" method="post" name="myform" id="myform">
+    {$form}
+    <div class="portlet bordered light myfbody">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject font-green "><i class="fa fa-rmb"></i> {mys_lang('用户充值')}</span>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <div class="form-body">
+
+                <div class="form-group" id="mys_row_unit">
+                    <label class="col-md-2 control-label"><span class="required" aria-required="true"> * </span> {mys_lang('充值类型')}</label>
+                    <div class="col-md-9">
+                        <div class="mt-radio-inline">
+                            <label class="mt-radio mt-radio-outline"><input name="data[unit]" type="radio" value="1" /> {SITE_SCORE} <span></span></label>
+                            <label class="mt-radio mt-radio-outline"><input name="data[unit]" type="radio" value="2"  /> {mys_lang('人民币')} <span></span></label>
+                        </div>
+                    </div>
+                </div>
+                {$myfield}
+                <div class="form-group" id="mys_row_value">
+                    <label class="col-md-2 control-label"><span class="required" aria-required="true"> * </span> {mys_lang('充值金额')}</label>
+                    <div class="col-md-9">
+                        <label><input type="text" class="form-control input-large" id="mys_value" name="data[value]"></label>
+                        <span class="help-block"> {mys_lang('正数表示增加; 负数表示减少')} </span>
+                    </div>
+                </div>
+                <div class="form-group" id="mys_row_note">
+                    <label class="col-md-2 control-label"><span class="required" aria-required="true"> * </span> {mys_lang('备注说明')}</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control" id="mys_note" name="data[note]" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet-body form myfooter">
+        <div class="form-actions text-center">
+            <button type="button" onclick="mys_ajax_submit('{mys_now_url()}', 'myform', '2000')" class="btn green"> <i class="fa fa-save"></i> {mys_lang('确定充值')}</button>
+        </div>
+    </div>
+</form>
+
+{template "footer.html"}

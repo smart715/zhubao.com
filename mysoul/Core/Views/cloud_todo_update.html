@@ -1,0 +1,187 @@
+{template "header.html"}
+
+
+<div class="text-center" id="mys_check_button">
+    <button type="button" id="mys_check_button_ing" disabled="disabled" class="btn green-meadow"> <img width="15" src="{THEME_PATH}assets/images/loading-2.gif">  准备中 </button>
+</div>
+
+<div id="mys_check_result" class="margin-top-30" style="display: none">
+
+</div>
+
+<div id="mys_check_div"  class="well margin-top-30" style="display: none">
+    <div class="scroller" style="height:250px" data-rail-visible="1"  id="mys_check_html">
+
+    </div>
+</div>
+
+<div id="mys_check_ing" style="display: none">
+    <div class="progress progress-striped">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(function () {
+        mys_checking();
+    });
+    function mys_checking() {
+        $('#mys_check_html').html("");
+        $('#mys_check_result').html($('#mys_check_ing').html());
+        $('#mys_check_div').show();
+        $('#mys_check_result').show();
+        $('#mys_check_reing').remove();
+        $('#mys_check_button_ing').addClass('green-meadow');
+        $('#mys_check_button_ing').removeClass('red');
+        $('#mys_check_button_ing').html('<img width="15" src="{THEME_PATH}assets/images/loading-2.gif"> 准备中');
+        $('#mys_check_html').append('<p class=""><label class="rleft">正在验证服务端授权信息</label></p>');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "{mys_url('cloud/update_file')}&id={$app_id}",
+            success: function (json) {
+                if (json.code == 0) {
+                    $('#mys_check_button_ing').html('<i class="fa fa-times-circle"></i> 下载失败');
+                    $('#mys_check_button_ing').addClass('red');
+                    $('#mys_check_button_ing').removeClass('green-meadow');
+                    $('#mys_check_button').append('<button type="button" id="mys_check_reing" onclick="mys_checking()" class="btn green"> <i class="fa fa-refresh"></i> 重新下载 </button>');
+                    $('#mys_check_html').append('<p class="p_error"><label class="rleft">'+json.msg+'</label></p>');
+                } else {
+                    mys_do_cron();
+                }
+            },
+            error: function(HttpRequest, ajaxOptions, thrownError) {
+                mys_ajax_alert_error(HttpRequest, ajaxOptions, thrownError)
+            }
+        });
+    }
+    // 执行下载
+    function mys_do_cron() {
+        // 开始下载他
+        $('#mys_check_html').append('<p class=""><label class="rleft">正在开始下载文件</label></p>');
+        $('#mys_check_button_ing').html('<img width="15" src="{THEME_PATH}assets/images/loading-2.gif"> 下载中');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "{mys_url('cloud/update_file_down')}&id={$app_id}",
+            success: function (json) {
+                if (json.code == 0) {
+                    $('#mys_check_button_ing').html('<i class="fa fa-times-circle"></i> 下载失败');
+                    $('#mys_check_button_ing').addClass('red');
+                    $('#mys_check_button_ing').removeClass('green-meadow');
+                    $('#mys_check_button').append('<button type="button" id="mys_check_reing" onclick="mys_checking()" class="btn green"> <i class="fa fa-refresh"></i> 重新下载 </button>');
+                    $('#mys_check_html').append('<p class="p_error"><label class="rleft">'+json.msg+'</label></p>');
+                    clearInterval(interval_id);
+                } else {
+
+                }
+            },
+            error: function(HttpRequest, ajaxOptions, thrownError) {
+                mys_ajax_alert_error(HttpRequest, ajaxOptions, thrownError)
+            }
+        });
+        // 检测下载结果
+        var is_ok_lock = 0;
+        var interval_id = window.setInterval(function() {
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "{mys_url('cloud/update_file_check')}&id={$app_id}",
+                success: function (json) {
+
+                    document.getElementById('mys_check_html').scrollTop = document.getElementById('mys_check_html').scrollHeight;
+
+                    if (json.code == 0) {
+                        $('#mys_check_button_ing').html('<i class="fa fa-times-circle"></i> 下载失败');
+                        $('#mys_check_button_ing').addClass('red');
+                        $('#mys_check_button_ing').removeClass('green-meadow');
+                        $('#mys_check_button').html('<button type="button" id="mys_check_reing" onclick="mys_checking()" class="btn green"> <i class="fa fa-refresh"></i> 重新下载 </button>');
+                        clearInterval(interval_id);
+                    } else {
+                        $('#mys_check_result .progress-bar-success').attr('style', 'width:'+json.code+'%');
+                        if (json.code == 100) {
+                            // 下在完成
+                            clearInterval(interval_id);
+                            //mys_checking_install();
+                            if (is_ok_lock == 0) {
+                                $('#mys_check_html').append('<p class=""><label class="rleft">文件下载完成</label></p>');
+                                mys_checking_install();
+                            }
+                            is_ok_lock = 1;
+                        } else {
+                            $('#mys_check_html').append(json.msg);
+                            $('#mys_check_button_ing').html('<img width="15" src="{THEME_PATH}assets/images/loading-2.gif">  下载进度 '+json.code+'%');
+                        }
+                    }
+                },
+                error: function(HttpRequest, ajaxOptions, thrownError) {
+                    mys_ajax_alert_error(HttpRequest, ajaxOptions, thrownError)
+                }
+            });
+
+        }, 1000);
+    }
+
+    function mys_checking_install() {
+        $('#mys_check_html').html("");
+        $('#mys_check_result').html($('#mys_check_ing').html());
+        $('#mys_check_div').show();
+        $('#mys_check_result').show();
+        $('#mys_check_reing').remove();
+        $('#mys_check_button_ing').addClass('green-meadow');
+        $('#mys_check_button_ing').removeClass('red');
+        $('#mys_check_button_ing').html('<img width="15" src="{THEME_PATH}assets/images/loading-2.gif"> 更新中');
+        $('#mys_check_html').append('<p class=""><label class="rleft">正在更新本站程序文件</label></p>');
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "{mys_url('cloud/update_file_install')}&id={$app_id}",
+            success: function (json) {
+
+                if (json.code == 1) {
+                    // 升级完成
+                    $('#mys_check_button').html('<button type="button" onclick="parent.location.reload()" class="btn green"> <i class="fa fa-refresh"></i> 刷新后台 </button>');
+                    $('#mys_check_html').html('<p>恭喜你，升级完成，请刷新后台之后再更新后台缓存</p>');
+                } else {
+                    $('#mys_check_button_ing').html('<i class="fa fa-times-circle"></i> 升级失败');
+                    $('#mys_check_button_ing').addClass('red');
+                    $('#mys_check_button_ing').removeClass('green-meadow');
+                    $('#mys_check_button').append('<button type="button" id="mys_check_reing" onclick="mys_checking()" class="btn green"> <i class="fa fa-refresh"></i> 重新升级 </button>');
+                }
+
+            },
+            error: function(HttpRequest, ajaxOptions, thrownError) {
+                mys_ajax_alert_error(HttpRequest, ajaxOptions, thrownError)
+            }
+        });
+    }
+</script>
+
+<style>
+    #mys_check_html .p_error {
+        color: red;
+    }
+    #mys_check_html p {
+        margin: 10px 0;
+        clear: both;
+    }
+    #mys_check_html .rleft {
+        float: left;
+    }
+    #mys_check_html .rright .ok {
+        color: green;
+    }
+    #mys_check_html .rright .error {
+        color: red;
+    }
+    #mys_check_html .rright {
+        float: right;
+    }
+</style>
+
+{template "footer.html"}

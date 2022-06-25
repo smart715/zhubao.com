@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{$cat.name}_{SITE_NAME}</title>
+
+    <!--Favicons-->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+
+    <meta name="theme-color" content="#ffffff">
+
+    <!--Bootstrap and Other Vendors-->
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/owl.carousel.css">
+
+    <link rel="stylesheet" type="text/css" href="{THEME_PATH}skin/css/flexslider.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{THEME_PATH}skin/css/bootstrap-rating.css" media="screen" />
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+    <!--Mechanic Styles-->
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/style.css">
+    <link rel="stylesheet" href="{THEME_PATH}skin/css/responsive.css">
+
+    <!--Mechanic Styles-->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <a href="#" id="back-to-top" title="Back to top">&uarr;</a>
+
+    {template "header.html"}
+    <!--Header-->
+
+    <section id="breadcrumbRow" class="row">
+        <h2>{$cat.name}</h2>
+        <div class="row pageTitle m0">
+            <div class="container">
+                <h4 class="fleft">{$cat.name}</h4>
+                <!-- <ul class="breadcrumb fright">
+                    <li><a href="/">HOME</a></li>
+                    <span style="color:black">&nbsp; / </span>
+                    <span style="color:black">&nbsp;{mys_catpos($catid, ' / ', true, '&nbsp;<a href=[url] style="color:black">[name]</a>')}</span>
+                </ul> -->
+            </div>
+        </div>
+    </section>
+
+    <section class="row contentRowPad greybg">
+        <div class="container">
+            <div class="row"> 
+                <ul class="list clearfix" style="list-style:none;display: flex;justify-content: space-between;width: 1100px">
+                        {search module=MOD_DIR id=$searchid total=$sototal order=$params.order catid=$catid urlrule=$urlrule  page=10 pagesize=2 }
+                        <li class="item" style="width:500px"> <a class="clearfix" href="{$t.url}" title="{$t.title}">
+                          <div class="txt fr">
+                            <h3 style="color:black;text-align: center">{$t.title}</h3>
+                            <div class="mark" style="background:none;color:grey;display: flex;
+                            justify-content: space-around;"><span>时间：{mys_date($t._inputtime,'Y-m-d')}</span>
+                                <span>浏览量：{$t.hits}</span></div>
+                            <p class="desc" style="width:800px;margin:10px auto;">{$t.description}</p>
+                          </div>
+                          <div class="img" style="margin:0 auto"> <img src="{mys_get_file($t.thumb)}" alt="{$t.title}"></div>
+                          </a>
+                        </li>
+                        {/search}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div>{$pages}</div>
+
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center
+        }
+    </style>
+
+    {template "footer.html"}
+
+
+    <!--jQuery, Bootstrap and other vendor JS-->
+
+    <!--jQuery-->
+    <script src="{THEME_PATH}skin/js/jquery-2.1.3.min.js"></script>
+    <!--Google Maps-->
+    <script src="http://ditu.google.cn/maps/api/js"></script>
+    <!--Bootstrap JS-->
+    <script src="{THEME_PATH}skin/js/bootstrap.min.js"></script>
+
+    <!--Owl Carousel-->
+    <script src="{THEME_PATH}skin/js/owl.carousel.min.js"></script>
+    <!--Isotope-->
+    <script src="{THEME_PATH}skin/js/isotope-custom.js"></script>
+    <!--FlexSlider-->
+    <script src="{THEME_PATH}skin/js/jquery.flexslider-min.js"></script>
+    <!--D-shine JS-->
+    <script src="{THEME_PATH}skin/js/d-shine.js"></script>
+</body>
+
+</html>
