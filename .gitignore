@@ -1,0 +1,5 @@
+# logs
+cache/error
+cache/error_php
+cache/log
+cache/session

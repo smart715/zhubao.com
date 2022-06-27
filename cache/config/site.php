@@ -10,9 +10,9 @@ return array (
     1 => 
     array (
         'SITE_NAME' => 'D-shine',
-        'SITE_DOMAIN' => 'www.zhubao.com',
-        'SITE_DOMAINS' => '',
-        'SITE_LOGO' => 'http://www.zhubao.com/uploadfile/202201/29faae88a117d4d.png',
+        'SITE_DOMAIN' => '',
+        'SITE_DOMAINS' => 'localhost',
+        'SITE_LOGO' => 'http://localhost/uploadfile/202201/29faae88a117d4d.png',
         'SITE_MOBILE' => '',
         'SITE_AUTO' => '',
         'SITE_IS_MOBILE_HTML' => '',

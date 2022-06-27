@@ -8,6 +8,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 return [
 
-	'www.zhubao.com'                => 1,
+	'localhost'                => 1,
 
 ];
